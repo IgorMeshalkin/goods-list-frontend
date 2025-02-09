@@ -1,0 +1,34 @@
+@import "./src/index.scss";
+
+.main {
+  @include size(100%, 100%);
+  @include flex-center;
+  @include fadeIn;
+  flex-direction: column;
+
+  .list__container {
+    @include size(100%, 85%);
+    @include vertical-scroll;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+    padding-top: 1em;
+    box-sizing: border-box;
+  }
+
+  .pagination_panel__container {
+    @include size(100%, 15%);
+    @include flex-center;
+    background-color: #7B778A;
+  }
+}
+
+.item_main {
+  @include size(60%, 150px);
+  @include flex-center;
+  flex-shrink: 0;
+  border-radius: $common-border-radius;
+  border: 1px solid $color-5;
+}

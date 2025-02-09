@@ -1,0 +1,74 @@
+// VARIABLES
+
+// colors
+$color-1: #111015;
+$color-2: #17152e;
+$color-3: white;
+$color-4: #3E37FF;
+$color-5: #7B778A;
+
+// other
+$navbar-height: 100px;
+$common-transition-time: .3s;
+$common-border-radius: 20px;
+
+//MIXINS & FUNCTIONS
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin flex-center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin fadeIn() {
+  animation: fadeIn $common-transition-time ease-in-out;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@mixin vertical-scroll {
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+html {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  bottom: 0;
+  left: 0;
+  overflow:hidden;
+}
+
+body {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  bottom: 0;
+  left: 0;
+  overflow:hidden;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: $color-1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
