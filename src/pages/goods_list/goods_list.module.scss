@@ -1,0 +1,105 @@
+@import "./src/index.scss";
+
+$good-item-size: 180px;
+$good-item-padding: .8em;
+
+.main {
+  @include size(100%, 100%);
+  @include flex-center;
+  @include fadeIn;
+  flex-direction: column;
+
+  .list__container {
+    @include size(100%, 85%);
+    @include vertical-scroll;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+    padding-top: 1em;
+    box-sizing: border-box;
+  }
+
+  .pagination_panel__container {
+    @include size(100%, 15%);
+    @include flex-center;
+  }
+}
+
+.item_main {
+  @include size(50%, $good-item-size);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: $common-border-radius;
+  border: 1px solid hex-to-rgba($color-4, 0.5);
+  background-color: $color-5;
+  padding: $good-item-padding;
+  box-sizing: border-box;
+  gap: $good-item-padding * 1.5;
+
+  .item_image__container {
+    @include size(calc($good-item-size - $good-item-padding), calc($good-item-size - $good-item-padding * 2));
+    border-radius: calc($common-border-radius / 2);
+    overflow: hidden;
+    box-shadow: 0 0 .3em hex-to-rgba($color-2, .3);
+  }
+
+  .item_info__container {
+    @include size(calc(90% - $good-item-size), calc($good-item-size - $good-item-padding * 2));
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+
+    .item_name__container {
+      display: flex;
+      align-items: center;
+      gap: .8em;
+
+      .item_name {
+        font-size: 2em;
+      }
+    }
+
+    .item_description {
+      font-weight: 300;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-word;
+    }
+
+    .item_price__container {
+      display: flex;
+      align-items: center;
+      gap: $good-item-padding * .5;
+
+      .available_price {
+        color: $color-6;
+        font-size: 1.5em;
+      }
+
+      .price_before_discount {
+        color: $color-4;
+        text-decoration: line-through;
+      }
+    }
+  }
+
+  .item_buttons__container {
+    @include size(10%, calc($good-item-size - $good-item-padding * 2));
+    display: flex;
+    align-items: end;
+    justify-content: space-around;
+    flex-direction: column;
+    opacity: .3;
+    transition: $common-transition-time;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

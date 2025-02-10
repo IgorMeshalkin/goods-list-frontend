@@ -11,7 +11,7 @@ import {UploadOutlined} from '@ant-design/icons';
 import {img_url} from "../../utils/common_variables";
 import {useMutation} from "@tanstack/react-query";
 import {EMethod} from "../../utils/types";
-import LoadingModalComponent from "../loading_modal/loading_modal.component";
+import LoadingModalComponent from "../../components/loading_modal/loading_modal.component";
 
 // data types for the form
 export type TFormData = {
@@ -23,7 +23,7 @@ export type TFormData = {
     imageFile?: UploadFile[];
 };
 
-const GoodFormComponent = () => {
+const GoodFormPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     // chosen good from location if it exists
@@ -210,4 +210,4 @@ const GoodFormComponent = () => {
     );
 };
 
-export default GoodFormComponent;
+export default GoodFormPage;

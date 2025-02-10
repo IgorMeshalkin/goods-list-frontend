@@ -7,6 +7,22 @@ export const text_content: any[] = [
         navbar: {
             title: 'Панель навигации'
         },
+        good_list_item: {
+            article: 'арт.',
+            details: 'Подробнее',
+            edit: 'Изменить',
+            delete: 'Удалить',
+            delete_confirm_modal: {
+                title: 'Подтверждение удаления',
+                ok_button_text: 'Удалить',
+                cansel_button_text: 'Назад',
+                getDeleteConfirmText: (goodName: string) => {
+                    return `Вы уверены что хотите удалить товар: "${goodName}"`
+                }
+            },
+            successful_delete_message: 'Товар успешно удалён',
+            fail_delete_message: 'Не удалось удалить товар. Повторите попытку позже'
+        },
         good_form: {
             labels: {
                 name: 'Название',

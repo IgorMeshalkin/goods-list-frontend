@@ -4,7 +4,7 @@ import {useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {fetchGood} from "../../api/good_api";
 
-const GoodDetailsComponent = () => {
+const GoodDetailsPage = () => {
     const {uuid} = useParams<{ uuid: string }>();
 
     // query and query states for getting good
@@ -32,4 +32,4 @@ const GoodDetailsComponent = () => {
     );
 };
 
-export default GoodDetailsComponent;
+export default GoodDetailsPage;

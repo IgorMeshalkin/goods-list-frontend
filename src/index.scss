@@ -1,11 +1,12 @@
 // VARIABLES
 
 // colors
-$color-1: #111015;
-$color-2: #17152e;
-$color-3: white;
-$color-4: #3E37FF;
-$color-5: #7B778A;
+$color-1: #F7F7F7;
+$color-2: #1e1e1e;
+$color-3: #1677ff;
+$color-4: #909091;
+$color-5: #ffffff;
+$color-6: #52c41a;
 
 // other
 $navbar-height: 100px;
@@ -76,7 +77,7 @@ body {
   padding: 0;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  color: $color-1;
+  color: hex-to-rgba($color-2, .8);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

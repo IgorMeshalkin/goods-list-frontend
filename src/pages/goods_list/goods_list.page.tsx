@@ -5,7 +5,7 @@ import st from './goods_list.module.scss';
 import GoodListItemComponent from "./good_list_item.component";
 import {useNavigate} from "react-router-dom";
 
-const GoodsListComponent = () => {
+const GoodsListPage = () => {
     // ref of the scrollable container with list of goods
     const scrollableContainerRef = useRef<HTMLDivElement>(null)
 
@@ -14,7 +14,7 @@ const GoodsListComponent = () => {
     const [page, setPage] = useState<number>(1);
 
     // query and query states for getting goods list
-    const {data: goods, error, isLoading} = useQuery({
+    const {data: goods, error, isLoading, refetch } = useQuery({
         queryKey: ["goods", page, limit],
         queryFn: () => fetchGoods(limit, page),
     });
@@ -56,7 +56,7 @@ const GoodsListComponent = () => {
 
                 {(!isLoading && !error) &&
                     goods?.goods.map((good) => (
-                        <GoodListItemComponent key={good.article} good={good}/>
+                        <GoodListItemComponent key={good.article} good={good} refetchList={refetch}/>
                     ))
                 }
             </div>
@@ -88,4 +88,4 @@ const GoodsListComponent = () => {
     );
 };
 
-export default GoodsListComponent;
+export default GoodsListPage;

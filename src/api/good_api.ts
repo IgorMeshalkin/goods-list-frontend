@@ -1,6 +1,6 @@
 import {z} from "zod";
 import {api_url} from "../utils/common_variables";
-import {TFormData} from "../components/good_form/good_form.component";
+import {TFormData} from "../pages/good_form/good_form.page";
 import {EMethod} from "../utils/types";
 
 // separated good schema
@@ -31,13 +31,13 @@ export type TGoods = z.infer<typeof goodsSchema>;
 export const fetchGoods = async (limit: number, page: number): Promise<TGoods> => {
     let paramsString = `?limit=${limit}`;
     paramsString += `&offset=${limit * (page - 1)}`;
-
+    // send query
     const res = await fetch(`${api_url}/goods${paramsString}`);
-
+    // checks status
     if (!res.ok) {
         throw new Error(`Failed to fetch goods: ${res.status} ${res.statusText}`);
     }
-
+    // tries to get data from response
     try {
         const data = await res.json();
         return goodsSchema.parse(data);
@@ -49,12 +49,13 @@ export const fetchGoods = async (limit: number, page: number): Promise<TGoods> =
 
 // returns good by uuid
 export const fetchGood = async (uuid: string): Promise<TGood> => {
+    // send query
     const res = await fetch(`${api_url}/goods/${uuid}`);
-
+    // checks status
     if (!res.ok) {
         throw new Error(`Failed to fetch good: ${res.status} ${res.statusText}`);
     }
-
+    // tries to get data from response
     try {
         const data = await res.json();
         return goodSchema.parse(data);
@@ -64,6 +65,7 @@ export const fetchGood = async (uuid: string): Promise<TGood> => {
     }
 };
 
+// creates or updates goods
 export const saveGood = async (data: TFormData, method: EMethod, goodUuid: string | null) => {
     // creates form data
     const formData = new FormData();
@@ -83,7 +85,7 @@ export const saveGood = async (data: TFormData, method: EMethod, goodUuid: strin
     if (data.imageFile && data.imageFile.length > 0) {
         formData.append('image', data.imageFile[0] as unknown as File);
     }
-    // send request to api
+    // send query
     const res = await fetch(`${api_url}/goods${method === 'PUT' ? `/${goodUuid}` : ''}`, {
         method,
         body: formData,
@@ -101,3 +103,15 @@ export const saveGood = async (data: TFormData, method: EMethod, goodUuid: strin
         throw new Error("Invalid API response");
     }
 };
+
+// deletes goods
+export const deleteGood = async (goodUuid: string) => {
+    // send query
+    const res = await fetch(`${api_url}/goods/${goodUuid}`, {
+        method: 'DELETE'
+    });
+    // checks status
+    if (!res.ok) {
+        throw new Error(`Failed to fetch good: ${res.status} ${res.statusText}`);
+    }
+}
