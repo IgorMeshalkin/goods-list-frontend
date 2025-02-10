@@ -98,10 +98,7 @@ $good-item-padding: .8em;
 
   .item_buttons__container {
     @include size(10%, calc($good-item-size - $good-item-padding * 2));
-    display: flex;
-    align-items: end;
-    justify-content: space-around;
-    flex-direction: column;
+    @include flex-center;
     opacity: .3;
     transition: $common-transition-time;
 

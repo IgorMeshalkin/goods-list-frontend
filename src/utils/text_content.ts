@@ -1,5 +1,18 @@
 import {EMethod} from "./types";
 
+// type for use item actions panel for different objects
+export type TItemActionsLangType = {
+    details: string,
+    edit: string,
+    delete: string,
+    delete_confirm_modal: {
+        title: string
+        ok_button_text: string
+        cansel_button_text: string
+        getDeleteConfirmText: (value: any) => void;
+    }
+}
+
 export const text_content: any[] = [
     {
         id: 'ru',
@@ -29,21 +42,27 @@ export const text_content: any[] = [
             loading: 'Загрузка...',
             error: 'Ошибка:'
         },
+        good_details: {
+            loading: 'Загрузка...',
+            error: 'Ошибка:'
+        },
         good_list_item: {
             article: 'арт.',
-            details: 'Подробнее',
-            edit: 'Изменить',
-            delete: 'Удалить',
-            delete_confirm_modal: {
-                title: 'Подтверждение удаления',
-                ok_button_text: 'Удалить',
-                cansel_button_text: 'Назад',
-                getDeleteConfirmText: (goodName: string) => {
-                    return `Вы уверены что хотите удалить товар: "${goodName}"`
-                }
-            },
             successful_delete_message: 'Товар успешно удалён',
-            fail_delete_message: 'Не удалось удалить товар. Повторите попытку позже'
+            fail_delete_message: 'Не удалось удалить товар. Повторите попытку позже',
+            item_actions: {
+                details: 'Подробнее',
+                edit: 'Изменить',
+                delete: 'Удалить',
+                delete_confirm_modal: {
+                    title: 'Подтверждение удаления',
+                    ok_button_text: 'Удалить',
+                    cansel_button_text: 'Назад',
+                    getDeleteConfirmText: (goodName: string) => {
+                        return `Вы уверены что хотите удалить товар: "${goodName}"`
+                    }
+                },
+            }
         },
         good_form: {
             labels: {
@@ -56,14 +75,14 @@ export const text_content: any[] = [
             },
             values: {
                 upload_image: 'Загрузить изображение',
-                getSubmitButtonText:  (method: EMethod) => {
+                getSubmitButtonText: (method: EMethod) => {
                     return method === 'POST' ? 'Создать' : 'Обновить'
                 },
                 getSuccessMessage: (method: EMethod) => {
                     return method === 'POST' ? 'Товар успешно создан' : 'Товар успешно обновлён'
                 },
                 getFailMessage: (method: EMethod) => {
-                    const differentSubString =  method === 'POST' ? 'создать' : 'обновить'
+                    const differentSubString = method === 'POST' ? 'создать' : 'обновить'
                     return `Не удалось ${differentSubString} товар. Повторите попытку позднее.`
                 },
             },
