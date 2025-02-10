@@ -1,8 +1,9 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useQuery} from "@tanstack/react-query";
-import {fetchGoods} from "../../api/GoodApi";
+import {fetchGoods} from "../../api/good_api";
 import st from './goods_list.module.scss';
 import GoodListItemComponent from "./good_list_item.component";
+import {useNavigate} from "react-router-dom";
 
 const GoodsListComponent = () => {
     // ref of the scrollable container with list of goods
@@ -33,6 +34,12 @@ const GoodsListComponent = () => {
             });
         }
     }, [goods]);
+
+    const navigate = useNavigate();
+
+    const goToForm = () => {
+        navigate(`/good/form`);
+    }
 
     return (
         <div className={st.main}>
@@ -70,6 +77,9 @@ const GoodsListComponent = () => {
                     </button>
                     <button disabled={limit === 30} onClick={() => setLimit(30)}>
                         30
+                    </button>
+                    <button onClick={() => goToForm()}>
+                        New
                     </button>
                 </div>
                 <span>Всего страниц: {totalPages}</span>

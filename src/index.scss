@@ -47,6 +47,15 @@ $common-border-radius: 20px;
   }
 }
 
+@function hex-to-rgba($hex, $alpha: 1) {
+  $r: red($hex);
+  $g: green($hex);
+  $b: blue($hex);
+  @return rgba($r, $g, $b, $alpha);
+}
+
+// HTML
+
 html {
   position: fixed;
   width: 100vw;

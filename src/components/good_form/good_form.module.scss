@@ -1,0 +1,11 @@
+@import "./src/index.scss";
+
+.main {
+  @include size(100%, 100%);
+  @include fadeIn;
+  @include flex-center;
+
+  .appear__container {
+    @include fadeIn;
+  }
+}

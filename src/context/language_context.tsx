@@ -1,4 +1,4 @@
-import {createContext, ReactNode, useContext, useState} from "react";
+import {createContext, ReactNode, useContext, useMemo, useState} from "react";
 import {text_content} from "../utils/text_content";
 
 type TLanguage = (typeof text_content)[number]["id"];
@@ -12,7 +12,10 @@ const LangContext = createContext<LangContextType | null>(null);
 
 export const LangProvider = ({children}: { children?: ReactNode }) => {
     const [language, setLanguage] = useState<TLanguage>(text_content[0].id);
-    const langContent = text_content.find(l => l.id === language);
+
+    const langContent = useMemo(() => {
+        return text_content.find(l => l.id === language);
+    }, [language])
 
     return (
         <LangContext.Provider value={{language, setLanguage, langContent}}>

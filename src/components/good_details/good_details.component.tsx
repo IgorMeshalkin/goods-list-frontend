@@ -2,12 +2,12 @@ import React from 'react';
 import st from './good_details.module.scss'
 import {useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
-import {fetchGood} from "../../api/GoodApi";
+import {fetchGood} from "../../api/good_api";
 
 const GoodDetailsComponent = () => {
     const {uuid} = useParams<{ uuid: string }>();
 
-    // query and query states for getting goods list
+    // query and query states for getting good
     const {data: good, error, isLoading} = useQuery({
         queryKey: ["good", uuid],
         queryFn: () => fetchGood(uuid),

@@ -1,6 +1,6 @@
 import React from 'react';
 import st from './goods_list.module.scss'
-import {TGood} from "../../api/GoodApi";
+import {TGood} from "../../api/good_api";
 import {useNavigate} from "react-router-dom";
 
 interface GoodListItemProps {
@@ -15,9 +15,15 @@ const GoodListItemComponent = ({good}: GoodListItemProps) => {
         navigate(`/good/${good.uuid}`)
     }
 
+    const showUpdatingForm = () => {
+        navigate(`/good/form`, {state: {good}});
+    }
+
     return (
-        <div className={st.item_main} onClick={showDetails}>
+        <div className={st.item_main}>
             {good.name}
+            <span onClick={showDetails}>Детали</span>
+            <span onClick={showUpdatingForm}>Форма</span>
         </div>
     );
 };
