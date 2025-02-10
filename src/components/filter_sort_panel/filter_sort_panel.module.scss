@@ -1,0 +1,26 @@
+@import "./src/index.scss";
+
+.main {
+  @include size(100%, 100%);
+  @include flex-center;
+  gap: 3em;
+
+  .sort__container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+  }
+
+  .filter__container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+
+    .title {
+      font-size: 14px;
+    }
+  }
+
+}

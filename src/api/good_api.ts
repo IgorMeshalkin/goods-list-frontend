@@ -1,7 +1,7 @@
 import {z} from "zod";
 import {api_url} from "../utils/common_variables";
 import {TFormData} from "../pages/good_form/good_form.page";
-import {EMethod} from "../utils/types";
+import {EGoodSortOptions, EMethod} from "../utils/types";
 
 // separated good schema
 export const goodSchema = z.object({
@@ -28,9 +28,16 @@ export type TGoods = z.infer<typeof goodsSchema>;
 
 // returns array of goods and how many pages available number
 // supports pagination, sorting and filtering
-export const fetchGoods = async (limit: number, page: number): Promise<TGoods> => {
+export const fetchGoods = async (limit: number, page: number, sort: EGoodSortOptions, minPrice: number | undefined, maxPrice: number | undefined,): Promise<TGoods> => {
     let paramsString = `?limit=${limit}`;
     paramsString += `&offset=${limit * (page - 1)}`;
+    paramsString += `&sort=${sort}`;
+    if (minPrice) {
+        paramsString += `&minPrice=${minPrice}`
+    }
+    if (maxPrice) {
+        paramsString += `&maxPrice=${maxPrice}`
+    }
     // send query
     const res = await fetch(`${api_url}/goods${paramsString}`);
     // checks status

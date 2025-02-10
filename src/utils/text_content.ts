@@ -15,6 +15,20 @@ export const text_content: any[] = [
             },
             pageSizeTitle: 'Всего на странице:'
         },
+        filter_sort: {
+            price_down: 'Сначала дорогие',
+            price_up: 'Сначала дешёвые',
+            filter_from: 'Цена от:',
+            filter_to: 'Цена до:',
+            errors: {
+                max_less_min: 'Максимальная цена должна быть больше чем минимальная.',
+                positive_value: 'Цены должны быть положительными числами'
+            }
+        },
+        good_list: {
+            loading: 'Загрузка',
+            error: 'Ошибка'
+        },
         good_list_item: {
             article: 'арт.',
             details: 'Подробнее',

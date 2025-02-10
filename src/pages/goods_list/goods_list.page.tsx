@@ -1,12 +1,17 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useQuery} from "@tanstack/react-query";
 import {fetchGoods} from "../../api/good_api";
 import st from './goods_list.module.scss';
 import GoodListItemComponent from "./good_list_item.component";
 import {useNavigate} from "react-router-dom";
-import PaginationPanelComponent from "../../components/paginetion_panel/pagination_panel.component";
+import PaginationPanelComponent from "../../components/pagination_panel/pagination_panel.component";
+import FilterSortPanelComponent from "../../components/filter_sort_panel/filter_sort_panel.component";
+import {EGoodSortOptions} from "../../utils/types";
+import {useLang} from "../../context/language_context";
 
 const GoodsListPage = () => {
+    const langContent = useLang();
+
     // ref of the scrollable container with list of goods
     const scrollableContainerRef = useRef<HTMLDivElement>(null)
 
@@ -14,10 +19,15 @@ const GoodsListPage = () => {
     const [limit, setLimit] = useState<number>(10);
     const [page, setPage] = useState<number>(1);
 
+    // filter and sort states
+    const [sort, setSort] = useState<EGoodSortOptions>(EGoodSortOptions.PRICE_DOWN)
+    const [minPrice, setMinPrice] = useState<number | undefined>(undefined)
+    const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined)
+
     // query and query states for getting goods list
     const {data: goods, error, isLoading, refetch} = useQuery({
-        queryKey: ["goods", page, limit],
-        queryFn: () => fetchGoods(limit, page),
+        queryKey: ["goods", page, limit, sort, minPrice, maxPrice],
+        queryFn: () => fetchGoods(limit, page, sort, minPrice, maxPrice),
     });
 
     // how many pages of goods exists in database
@@ -28,6 +38,14 @@ const GoodsListPage = () => {
             setTotalPages(goods.pagesCount);
         }
     }, [goods]);
+
+    // chose last page in the case when after using filters
+    // total pages became less selected page number
+    useEffect(() => {
+        if (totalPages > 0 && totalPages < page) {
+            setPage(totalPages);
+        }
+    }, [totalPages]);
 
     // smooth returns scroll to start position after every update list
     useEffect(() => {
@@ -50,20 +68,32 @@ const GoodsListPage = () => {
     return (
         <div className={st.main}>
             <div className={st.panel__container}>
+                <FilterSortPanelComponent
+                    sort={sort}
+                    setSort={setSort}
+                    minPrice={minPrice}
+                    setMinPrice={setMinPrice}
+                    maxPrice={maxPrice}
+                    setMaxPrice={setMaxPrice}
+                />
             </div>
             <div className={st.list__container} ref={scrollableContainerRef}>
                 {
                     isLoading &&
-                    <p>Загрузка...</p>
+                    <div className={st.screen_center__container}>
+                        <p>{langContent.good_list.loading}</p>
+                    </div>
                 }
 
                 {
                     error &&
-                    <p>Ошибка: {error.message}</p>
-                }
+                    <div className={st.screen_center__container}>
+                        <p>`${langContent.good_list.error} ${error.message}`</p>
+                    </div>
+            }
 
-                {(!isLoading && !error) &&
-                    goods?.goods.map((good) => (
+            {(!isLoading && !error) &&
+                goods?.goods.map((good) => (
                         <GoodListItemComponent key={good.article} good={good} refetchList={refetch}/>
                     ))
                 }
@@ -76,28 +106,6 @@ const GoodsListPage = () => {
                     limit={limit}
                     setLimit={setLimit}
                 />
-                {/*<div>*/}
-                {/*    <button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>*/}
-                {/*        Назад*/}
-                {/*    </button>*/}
-                {/*    <span> Страница {page} </span>*/}
-                {/*    <button disabled={page === totalPages} onClick={() => setPage((p) => p + 1)}>*/}
-                {/*        Вперёд*/}
-                {/*    </button>*/}
-                {/*    <button disabled={limit === 10} onClick={() => setLimit(10)}>*/}
-                {/*        10*/}
-                {/*    </button>*/}
-                {/*    <button disabled={limit === 20} onClick={() => setLimit(20)}>*/}
-                {/*        20*/}
-                {/*    </button>*/}
-                {/*    <button disabled={limit === 30} onClick={() => setLimit(30)}>*/}
-                {/*        30*/}
-                {/*    </button>*/}
-                {/*    <button onClick={() => goToForm()}>*/}
-                {/*        New*/}
-                {/*    </button>*/}
-                {/*</div>*/}
-                {/*<span>Всего страниц: {totalPages}</span>*/}
             </div>
         </div>
     );
