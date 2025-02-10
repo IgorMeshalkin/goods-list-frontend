@@ -10,7 +10,7 @@ $good-item-padding: .8em;
   flex-direction: column;
 
   .list__container {
-    @include size(100%, 85%);
+    @include size(100%, 80%);
     @include vertical-scroll;
     display: flex;
     justify-content: start;
@@ -21,9 +21,11 @@ $good-item-padding: .8em;
     box-sizing: border-box;
   }
 
-  .pagination_panel__container {
-    @include size(100%, 15%);
+  .panel__container {
+    @include size(100%, 10%);
     @include flex-center;
+    border-top: 1px solid hex-to-rgba($color-4, .5);
+    border-bottom: 1px solid hex-to-rgba($color-4, .5);
   }
 }
 

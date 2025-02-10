@@ -7,6 +7,14 @@ export const text_content: any[] = [
         navbar: {
             title: 'Панель навигации'
         },
+        pagination: {
+            pageDown: 'Назад',
+            pageUp: 'Вперед',
+            getPagesInfo: (page: number, totalPages: number) => {
+                return `${page} из ${totalPages}`;
+            },
+            pageSizeTitle: 'Всего на странице:'
+        },
         good_list_item: {
             article: 'арт.',
             details: 'Подробнее',

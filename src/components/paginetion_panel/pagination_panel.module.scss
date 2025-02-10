@@ -1,0 +1,25 @@
+@import "./src/index.scss";
+
+.main {
+  @include size(100%, 100%);
+  @include flex-center;
+  gap: 3em;
+
+  .pagination__container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+  }
+
+  .page_size__container {
+    height: 100%;
+    align-items: center;
+    display: flex;
+    gap: 1em;
+
+    .page_size_title {
+      font-size: 14px;
+    }
+  }
+}

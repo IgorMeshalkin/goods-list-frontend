@@ -22,29 +22,28 @@ const GoodListItemComponent = ({good, refetchList}: GoodListItemProps) => {
     const {langContent} = useLang();
     const navigate = useNavigate();
 
+    // navigates to good details page
     const showDetails = () => {
         navigate(`/good/${good.uuid}`)
     }
 
+    // navigates to edition form
     const showUpdatingForm = () => {
         navigate(`/good/form`, {state: {good}});
     }
 
+    // states for 'Details', 'Edit' and 'Delete' buttons
+    // for hover change color effect
     const [isDetailsButtonHovered, setIsDetailsButtonHovered] = useState(false);
     const [isUpdateButtonHovered, setIsUpdateButtonHovered] = useState(false);
     const [isDeleteButtonHovered, setIsDeleteButtonHovered] = useState(false);
 
-    const buttonStyles = {
-        width: 40,
-        height: 40,
-        padding: 0,
-        borderRadius: 10
-    }
-
+    // accent color for buttons change color effect
     const getAccentColor = (isDeleting: boolean) => {
         return isDeleting ? '#ff4d4f' : '#1890ff';
     }
 
+    // returns buttons styles
     const getButtonStyles = (isHovered: boolean, isDeleting: boolean = false) => {
         return {
             width: 40,
@@ -56,6 +55,7 @@ const GoodListItemComponent = ({good, refetchList}: GoodListItemProps) => {
         }
     }
 
+    // returns buttons icon styles
     const getIconStyle = (isHovered: boolean, isDeleting: boolean = false) => {
         return {
             fill: 'none',
@@ -64,8 +64,10 @@ const GoodListItemComponent = ({good, refetchList}: GoodListItemProps) => {
         }
     }
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // state confirm delete modal
+    const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
 
+    // mutation for delete goods
     const deleteMutation = useMutation<any, Error, string>({
         mutationFn: async (uuid: string) => deleteGood(uuid),
         onSuccess: (result) => {
@@ -77,15 +79,15 @@ const GoodListItemComponent = ({good, refetchList}: GoodListItemProps) => {
         },
     });
 
+    // delete handle function
     const handleDelete = () => {
-        setIsModalOpen(false);
+        setIsConfirmDeleteModalOpen(false);
         deleteMutation.mutateAsync(good.uuid);
     }
 
-    console.log(`${img_url}${good.image}`)
-
     return (
         <div className={st.item_main}>
+            {/* Good image if exists or default image */}
             <div className={st.item_image__container}>
                 <AntImage
                     style={{width: '100%'}}
@@ -94,6 +96,8 @@ const GoodListItemComponent = ({good, refetchList}: GoodListItemProps) => {
                     fallback="default_good.png"
                 />
             </div>
+
+            {/* Good info: name, article, descripting and prices */}
             <div className={st.item_info__container}>
                 <div className={st.item_name__container}>
                     <span className={st.item_name}>{`${good.name}`}</span>
@@ -114,6 +118,8 @@ const GoodListItemComponent = ({good, refetchList}: GoodListItemProps) => {
                     }
                 </div>
             </div>
+
+            {/* Details, Edit and Delete buttons */}
             <div className={st.item_buttons__container}>
                 <Tooltip title={langContent.good_list_item.details}>
                     <Button
@@ -145,21 +151,25 @@ const GoodListItemComponent = ({good, refetchList}: GoodListItemProps) => {
                         style={getButtonStyles(isDeleteButtonHovered, true)}
                         onMouseEnter={() => setIsDeleteButtonHovered(true)}
                         onMouseLeave={() => setIsDeleteButtonHovered(false)}
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => setIsConfirmDeleteModalOpen(true)}
                     />
                 </Tooltip>
             </div>
+
+            {/* Confirm delete good modal */}
             <Modal
                 title={langContent.good_list_item.delete_confirm_modal.title}
-                open={isModalOpen}
+                open={isConfirmDeleteModalOpen}
                 onOk={handleDelete}
-                onCancel={() => setIsModalOpen(false)}
+                onCancel={() => setIsConfirmDeleteModalOpen(false)}
                 okText={langContent.good_list_item.delete_confirm_modal.ok_button_text}
                 cancelText={langContent.good_list_item.delete_confirm_modal.cansel_button_text}
                 okButtonProps={{ danger: true }}
             >
                 <p>{langContent.good_list_item.delete_confirm_modal.getDeleteConfirmText(good.name)}</p>
             </Modal>
+
+            {/* Loader of deleting good */}
             <LoadingModalComponent visible={deleteMutation.isPending}/>
         </div>
     );
