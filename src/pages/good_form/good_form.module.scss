@@ -4,6 +4,29 @@
   @include size(100%, 100%);
   @include fadeIn;
   @include flex-center;
+  padding-top: 1em;
+  box-sizing: border-box;
+
+  .form {
+    @include size(80%, 100%);
+
+    .line__container {
+      @include size(100%, auto);
+      display: flex;
+
+      .column__container {
+        flex: 1;
+        padding-left: 1em;
+        padding-right: 1em;
+        box-sizing: border-box;
+      }
+    }
+
+    .submit_button__container {
+      @include size(100%, 80px);
+      @include flex-center;
+    }
+  }
 
   .appear__container {
     @include fadeIn;

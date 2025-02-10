@@ -10,7 +10,7 @@ import {EGoodSortOptions} from "../../utils/types";
 import {useLang} from "../../context/language_context";
 
 const GoodsListPage = () => {
-    const langContent = useLang();
+    const {langContent} = useLang();
 
     // ref of the scrollable container with list of goods
     const scrollableContainerRef = useRef<HTMLDivElement>(null)

@@ -26,8 +26,8 @@ export const text_content: any[] = [
             }
         },
         good_list: {
-            loading: 'Загрузка',
-            error: 'Ошибка'
+            loading: 'Загрузка...',
+            error: 'Ошибка:'
         },
         good_list_item: {
             article: 'арт.',

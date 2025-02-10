@@ -73,7 +73,7 @@ export const fetchGood = async (uuid: string): Promise<TGood> => {
 };
 
 // creates or updates goods
-export const saveGood = async (data: TFormData, method: EMethod, goodUuid: string | null) => {
+export const saveGood = async (data: TFormData, method: EMethod, goodUuid: string | null, isImageWasRemoved: boolean) => {
     // creates form data
     const formData = new FormData();
     // puts required fields to form data
@@ -91,6 +91,9 @@ export const saveGood = async (data: TFormData, method: EMethod, goodUuid: strin
     // checks and added to form data image if it exists and correct
     if (data.imageFile && data.imageFile.length > 0) {
         formData.append('image', data.imageFile[0] as unknown as File);
+    }
+    if (method === EMethod.PUT && isImageWasRemoved) {
+        formData.append('imageWasRemoved', String(isImageWasRemoved));
     }
     // send query
     const res = await fetch(`${api_url}/goods${method === 'PUT' ? `/${goodUuid}` : ''}`, {

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import st from './good_form.module.scss';
 import {saveGood, TGood} from "../../api/good_api";
 import {useLocation, useNavigate} from "react-router-dom";
@@ -28,6 +28,8 @@ const GoodFormPage = () => {
     const location = useLocation();
     // chosen good from location if it exists
     const {good} = (location.state as { good?: TGood }) || {};
+
+    const [isImageWasRemoved, setIsImageWasRemoved] = useState(false);
 
     // last good uuid if it exists
     // for update operations only
@@ -93,7 +95,7 @@ const GoodFormPage = () => {
 
     // form data mutation object
     const mutation = useMutation<any, Error, TFormData>({
-        mutationFn: async (data: TFormData) => saveGood(data, method, goodUuid),
+        mutationFn: async (data: TFormData) => saveGood(data, method, goodUuid, isImageWasRemoved),
         onSuccess: (result) => {
             message.success(langContent.good_form.values.getSuccessMessage(method));
             navigate('/');
@@ -110,100 +112,124 @@ const GoodFormPage = () => {
 
     return (
         <div className={st.main}>
-            <Form onFinish={handleSubmit(onSubmit)} layout="vertical">
-                {/* Name field */}
-                <Form.Item
-                    label={langContent.good_form.labels.name}
-                    validateStatus={errors.name ? 'error' : ''}
-                    help={errors.name?.message}
-                >
-                    <Controller
-                        name="name"
-                        control={control}
-                        render={({field}) => <Input {...field} />}
-                    />
-                </Form.Item>
+            <Form onFinish={handleSubmit(onSubmit)} layout="vertical" className={st.form}>
+                <div className={st.line__container}>
+                    <div className={st.column__container}>
+                        {/* Name field */}
+                        <Form.Item
+                            label={langContent.good_form.labels.name}
+                            validateStatus={errors.name ? 'error' : ''}
+                            help={errors.name?.message}
+                        >
+                            <Controller
+                                name="name"
+                                control={control}
+                                render={({field}) => <Input {...field} />}
+                            />
+                        </Form.Item>
+                    </div>
+                    <div className={st.column__container}>
+                        {/* Article field */}
+                        <Form.Item
+                            label={langContent.good_form.labels.article}
+                            validateStatus={errors.article ? 'error' : ''}
+                            help={errors.article?.message}
+                        >
+                            <Controller
+                                name="article"
+                                control={control}
+                                render={({field}) => <Input {...field} />}
+                            />
+                        </Form.Item>
+                    </div>
+                </div>
 
-                {/* Description field */}
-                <Form.Item
-                    label={langContent.good_form.labels.description}
-                >
-                    <Controller
-                        name="description"
-                        control={control}
-                        render={({field}) => <Input.TextArea {...field} rows={4}/>}
-                    />
-                </Form.Item>
+                <div className={st.line__container}>
+                    <div className={st.column__container}>
+                        {/* Description field */}
+                        <Form.Item
+                            label={langContent.good_form.labels.description}
+                        >
+                            <Controller
+                                name="description"
+                                control={control}
+                                render={({field}) => <Input.TextArea {...field} rows={3}/>}
+                            />
+                        </Form.Item>
+                    </div>
+                </div>
 
-                {/* Price field */}
-                <Form.Item
-                    label={langContent.good_form.labels.price}
-                    validateStatus={errors.price ? 'error' : ''}
-                    help={errors.price?.message}
-                >
-                    <Controller
-                        name="price"
-                        control={control}
-                        render={({field}) => <InputNumber {...field} style={{width: '100%'}}/>}
-                    />
-                </Form.Item>
+                <div className={st.line__container}>
+                    <div className={st.column__container}>
+                        {/* Price field */}
+                        <Form.Item
+                            label={langContent.good_form.labels.price}
+                            validateStatus={errors.price ? 'error' : ''}
+                            help={errors.price?.message}
+                        >
+                            <Controller
+                                name="price"
+                                control={control}
+                                render={({field}) => <InputNumber {...field} style={{width: '100%'}}/>}
+                            />
+                        </Form.Item>
+                    </div>
+                    <div className={st.column__container}>
+                        {/* Discounted price field */}
+                        <Form.Item
+                            label={langContent.good_form.labels.discounted_price}
+                            validateStatus={errors.discountedPrice ? 'error' : ''}
+                            help={errors.discountedPrice?.message}
+                        >
+                            <Controller
+                                name="discountedPrice"
+                                control={control}
+                                render={({field}) => <InputNumber {...field} style={{width: '100%'}}/>}
+                            />
+                        </Form.Item>
+                    </div>
+                </div>
 
-                {/* Discounted price field */}
-                <Form.Item
-                    label={langContent.good_form.labels.discounted_price}
-                    validateStatus={errors.discountedPrice ? 'error' : ''}
-                    help={errors.discountedPrice?.message}
-                >
-                    <Controller
-                        name="discountedPrice"
-                        control={control}
-                        render={({field}) => <InputNumber {...field} style={{width: '100%'}}/>}
-                    />
-                </Form.Item>
+                <div className={st.line__container}>
+                    <div className={st.column__container}>
+                        {/* Image upload field */}
+                        <Form.Item
+                            label={langContent.good_form.labels.image}
+                        >
+                            <Controller
+                                name="imageFile"
+                                control={control}
+                                render={({field: {onChange, value}}) => (
+                                    <Upload
+                                        beforeUpload={(file) => {
+                                            setIsImageWasRemoved(false)
+                                            onChange([file]);
+                                            return false;
+                                        }}
+                                        onRemove={() => {
+                                            setIsImageWasRemoved(true)
+                                            onChange([]);
+                                        }}
+                                        maxCount={1} // one file only
+                                        fileList={value || []}
+                                        listType="picture"
+                                    >
+                                        <Button
+                                            icon={
+                                                <UploadOutlined/>}>{langContent.good_form.values.upload_image}</Button>
+                                    </Upload>
+                                )}
+                            />
+                        </Form.Item>
+                    </div>
+                </div>
 
-                {/* Article field */}
-                <Form.Item
-                    label={langContent.good_form.labels.article}
-                    validateStatus={errors.article ? 'error' : ''}
-                    help={errors.article?.message}
-                >
-                    <Controller
-                        name="article"
-                        control={control}
-                        render={({field}) => <Input {...field} />}
-                    />
-                </Form.Item>
-
-                {/* Image upload field */}
-                <Form.Item
-                    label={langContent.good_form.labels.image}
-                >
-                    <Controller
-                        name="imageFile"
-                        control={control}
-                        render={({field: {onChange, value}}) => (
-                            <Upload
-                                beforeUpload={(file) => {
-                                    onChange([file]);
-                                    return false;
-                                }}
-                                onRemove={() => {
-                                    onChange([]);
-                                }}
-                                maxCount={1} // one file only
-                                fileList={value || []}
-                                listType="picture"
-                            >
-                                <Button icon={<UploadOutlined/>}>{langContent.good_form.values.upload_image}</Button>
-                            </Upload>
-                        )}
-                    />
-                </Form.Item>
-
-                {/* Submit button */}
-                <Button type="primary" htmlType="submit" loading={false}>
-                    {langContent.good_form.values.getSubmitButtonText(method)}
-                </Button>
+                <div className={st.submit_button__container}>
+                    {/* Submit button */}
+                    <Button type="primary" htmlType="submit" loading={false}>
+                        {langContent.good_form.values.getSubmitButtonText(method)}
+                    </Button>
+                </div>
             </Form>
             <LoadingModalComponent visible={mutation.isPending}/>
         </div>
