@@ -8,6 +8,7 @@ import PaginationPanelComponent from "../../components/pagination_panel/paginati
 import FilterSortPanelComponent from "../../components/filter_sort_panel/filter_sort_panel.component";
 import {EGoodSortOptions} from "../../utils/types";
 import {useLang} from "../../context/language_context";
+import {Button} from "antd";
 
 const GoodsListPage = () => {
     const {langContent} = useLang();
@@ -76,6 +77,11 @@ const GoodsListPage = () => {
                     maxPrice={maxPrice}
                     setMaxPrice={setMaxPrice}
                 />
+                <Button
+                    type="primary"
+                    onClick={() => navigate('/good/form')}>
+                    {langContent.good_list.add_new}
+                </Button>
             </div>
             <div className={st.list__container} ref={scrollableContainerRef}>
                 {

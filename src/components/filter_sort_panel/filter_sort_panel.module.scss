@@ -1,7 +1,7 @@
 @import "./src/index.scss";
 
 .main {
-  @include size(100%, 100%);
+  @include size(auto, 100%);
   @include flex-center;
   gap: 3em;
 

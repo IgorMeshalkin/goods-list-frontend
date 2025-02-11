@@ -29,6 +29,7 @@ $good-item-padding: .8em;
   .panel__container {
     @include size(100%, 10%);
     @include flex-center;
+    gap: 3em;
     border-top: 1px solid hex-to-rgba($color-4, .5);
     border-bottom: 1px solid hex-to-rgba($color-4, .5);
   }
