@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {QueryProvider} from 'api/QueryProvider';
+import {QueryProvider} from './api/query_provider';
 import {LangProvider} from "./context/language_context";
 import { BrowserRouter as Router } from 'react-router-dom';
 
