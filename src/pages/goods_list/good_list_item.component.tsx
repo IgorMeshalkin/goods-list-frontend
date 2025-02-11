@@ -2,12 +2,10 @@ import React from 'react';
 import st from './goods_list.module.scss'
 import {deleteGood, TGood} from "../../api/good_api";
 import {useNavigate} from "react-router-dom";
-import {Image, message} from 'antd';
+import {Image} from 'antd';
 import {img_url} from "../../utils/common_variables";
 import {useLang} from "../../context/language_context";
 import {formatPrice} from "../../utils/common_functions";
-import LoadingModalComponent from "../../components/loading_modal/loading_modal.component";
-import {useMutation} from "@tanstack/react-query";
 import ItemActionsPanelComponent from "../../components/item_actions_panel/item_actions_panel.component";
 import {TItemActionsLangType} from "../../utils/text_content";
 
@@ -32,18 +30,6 @@ const GoodListItemComponent = ({good, refetchList}: GoodListItemProps) => {
     const showUpdatingForm = () => {
         navigate(`/good/form`, {state: {good}});
     }
-
-    // mutation for delete goods
-    const deleteMutation = useMutation<any, Error, string>({
-        mutationFn: async (uuid: string) => deleteGood(uuid),
-        onSuccess: (result) => {
-            message.success(langContent.good_list_item.successful_delete_message);
-            refetchList();
-        },
-        onError: (error) => {
-            message.error(langContent.good_list_item.fail_delete_message);
-        },
-    });
 
     return (
         <div className={st.item_main}>
@@ -82,16 +68,16 @@ const GoodListItemComponent = ({good, refetchList}: GoodListItemProps) => {
             {/* Details, Edit and Delete buttons */}
             <div className={st.item_buttons__container}>
                 <ItemActionsPanelComponent
+                    uuid={good.uuid}
+                    deleteFunction={deleteGood}
+                    afterSuccessfulDeleteFn={refetchList}
+                    includeDetails
                     itemName={good.name}
-                    itemLangActions={langContent.good_list_item.item_actions as TItemActionsLangType}
+                    itemLangActions={langContent.good_item_actions as TItemActionsLangType}
                     onDetailsClick={showDetails}
                     onEditClick={showUpdatingForm}
-                    onDeleteClick={() => deleteMutation.mutateAsync(good.uuid)}
                 />
             </div>
-
-            {/* Loader of deleting goods */}
-            <LoadingModalComponent visible={deleteMutation.isPending}/>
         </div>
     );
 };

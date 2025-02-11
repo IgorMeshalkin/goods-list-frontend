@@ -1,26 +1,47 @@
 import React, {useState} from 'react';
 import st from './item_actons_panel.module.scss'
-import {Button, Modal, Tooltip} from "antd";
+import {Button, message, Modal, Tooltip} from "antd";
 import {DeleteOutlined, EditOutlined, InfoCircleOutlined} from "@ant-design/icons";
 import {TItemActionsLangType} from "../../utils/text_content";
 import classNames from "classnames";
+import {useMutation} from "@tanstack/react-query";
+import LoadingModalComponent from "../loading_modal/loading_modal.component";
+import {useNavigate} from "react-router-dom";
 
 interface IItemActionsPanelProps {
+    uuid: string,
+    deleteFunction: (uuid: string) => void;
+    afterSuccessfulDeleteFn?: () => void;
     itemName: string;
     itemLangActions: TItemActionsLangType;
     includeDetails?: boolean;
+    includeBackButton?: boolean;
     direction?: 'horizontal' | 'vertical';
     onDetailsClick?: () => void;
     onEditClick?: () => void;
-    onDeleteClick?: () => void;
 }
 
-const ItemActionsPanelComponent = ({itemName, itemLangActions, includeDetails = true, direction = 'vertical', onDetailsClick, onEditClick, onDeleteClick}: IItemActionsPanelProps) => {
+const ItemActionsPanelComponent = ({
+                                       uuid,
+                                       deleteFunction,
+                                       afterSuccessfulDeleteFn,
+                                       itemName,
+                                       itemLangActions,
+                                       includeDetails = false,
+                                       includeBackButton = false,
+                                       direction = 'vertical',
+                                       onDetailsClick,
+                                       onEditClick,
+                                   }: IItemActionsPanelProps) => {
+
     // states for 'Details', 'Edit' and 'Delete' buttons
     // for hover change color effect
     const [isDetailsButtonHovered, setIsDetailsButtonHovered] = useState(false);
     const [isUpdateButtonHovered, setIsUpdateButtonHovered] = useState(false);
     const [isDeleteButtonHovered, setIsDeleteButtonHovered] = useState(false);
+
+    // navigate object
+    const navigate = useNavigate();
 
     // accent color for buttons change color effect
     const getAccentColor = (isDeleting: boolean) => {
@@ -48,16 +69,31 @@ const ItemActionsPanelComponent = ({itemName, itemLangActions, includeDetails = 
         }
     }
 
-    // state confirm delete modal
+    // mutation for delete items
+    const deleteMutation = useMutation<any, Error, string>({
+        mutationFn: async (uuid: string) => deleteFunction(uuid),
+        onSuccess: (result) => {
+            message.success(itemLangActions.successful_delete_message);
+            if (afterSuccessfulDeleteFn) {
+                afterSuccessfulDeleteFn();
+            }
+        },
+        onError: (error) => {
+            message.error(itemLangActions.fail_delete_message);
+        },
+    });
+
+    // state confirm delete modal is open
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
 
+    // handle delete item function, calls mutation
     const handleDelete = () => {
         setIsConfirmDeleteModalOpen(false);
-        onDeleteClick();
+        deleteMutation.mutateAsync(uuid)
     }
 
     return (
-        <div className={classNames(st.main, {[st.horizontal]:direction === 'horizontal'})}>
+        <div className={classNames(st.main, {[st.horizontal]: direction === 'horizontal'})}>
             {
                 includeDetails &&
                 <Tooltip title={itemLangActions.details}>
@@ -94,6 +130,14 @@ const ItemActionsPanelComponent = ({itemName, itemLangActions, includeDetails = 
                     onClick={() => setIsConfirmDeleteModalOpen(true)}
                 />
             </Tooltip>
+            {
+                includeBackButton &&
+                <Button
+                    type="primary"
+                    onClick={() => navigate(-1)}>
+                    {itemLangActions.back_button}
+                </Button>
+            }
 
             {/* Confirm delete good modal */}
             <Modal
@@ -103,10 +147,13 @@ const ItemActionsPanelComponent = ({itemName, itemLangActions, includeDetails = 
                 onCancel={() => setIsConfirmDeleteModalOpen(false)}
                 okText={itemLangActions.delete_confirm_modal.ok_button_text}
                 cancelText={itemLangActions.delete_confirm_modal.cansel_button_text}
-                okButtonProps={{ danger: true }}
+                okButtonProps={{danger: true}}
             >
                 <p>{itemLangActions.delete_confirm_modal.getDeleteConfirmText(itemName)}</p>
             </Modal>
+
+            {/* Loader of deleting goods */}
+            <LoadingModalComponent visible={deleteMutation.isPending}/>
         </div>
     );
 };

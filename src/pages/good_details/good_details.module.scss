@@ -9,20 +9,77 @@
   .image__container {
     @include size(100%, 50%);
     @include flex-center;
-    background-color: #1677ff;
     padding: 1em;
     box-sizing: border-box;
+
+    .custom_ant_image {
+      width: auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: auto;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
   }
 
   .info__container {
     @include size(100%, 40%);
     @include flex-center;
+    flex-direction: column;
     padding: 1em;
     box-sizing: border-box;
+    justify-content: space-around;
+    background-color: hex-to-rgba($color-4, .05);
+
+    .join__container {
+      @include size(100%, auto);
+      @include flex-center;
+      flex-direction: column;
+      text-align: center;
+      gap: .5em;
+
+      .name {
+        font-size: 2em;
+      }
+
+      .article {
+        font-size: .8em;
+      }
+    }
+
+    .description {
+      font-weight: 300;
+    }
+
+    .price__container {
+      @include flex-center;
+      flex-direction: column;
+      gap: .3em;
+
+      .available_price {
+        color: $color-6;
+        font-size: 1.5em;
+      }
+
+      .before_discount_price {
+        color: $color-4;
+        text-decoration: line-through;
+      }
+    }
   }
 
   .buttons__container {
     @include size(100%, 10%);
     @include flex-center;
+
+    .item_action__container {
+      @include size(350px, 100%);
+      @include flex-center;
+    }
   }
 }

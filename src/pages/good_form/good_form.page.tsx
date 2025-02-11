@@ -98,7 +98,7 @@ const GoodFormPage = () => {
         mutationFn: async (data: TFormData) => saveGood(data, method, goodUuid, isImageWasRemoved),
         onSuccess: (result) => {
             message.success(langContent.good_form.values.getSuccessMessage(method));
-            navigate('/');
+            navigate(-1);
         },
         onError: (error) => {
             message.error(langContent.good_form.values.getFailMessage(method));

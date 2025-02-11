@@ -5,12 +5,15 @@ export type TItemActionsLangType = {
     details: string,
     edit: string,
     delete: string,
+    back_button: string,
     delete_confirm_modal: {
         title: string
         ok_button_text: string
         cansel_button_text: string
         getDeleteConfirmText: (value: any) => void;
-    }
+    },
+    successful_delete_message: string,
+    fail_delete_message: string,
 }
 
 export const text_content: any[] = [
@@ -42,27 +45,29 @@ export const text_content: any[] = [
             loading: 'Загрузка...',
             error: 'Ошибка:'
         },
-        good_details: {
-            loading: 'Загрузка...',
-            error: 'Ошибка:'
-        },
-        good_list_item: {
-            article: 'арт.',
+        good_item_actions: {
+            details: 'Подробнее',
+            edit: 'Изменить',
+            delete: 'Удалить',
+            back_button: 'Назад',
+            delete_confirm_modal: {
+                title: 'Подтверждение удаления',
+                ok_button_text: 'Удалить',
+                cansel_button_text: 'Назад',
+                getDeleteConfirmText: (goodName: string) => {
+                    return `Вы уверены что хотите удалить товар: "${goodName}"`
+                }
+            },
             successful_delete_message: 'Товар успешно удалён',
             fail_delete_message: 'Не удалось удалить товар. Повторите попытку позже',
-            item_actions: {
-                details: 'Подробнее',
-                edit: 'Изменить',
-                delete: 'Удалить',
-                delete_confirm_modal: {
-                    title: 'Подтверждение удаления',
-                    ok_button_text: 'Удалить',
-                    cansel_button_text: 'Назад',
-                    getDeleteConfirmText: (goodName: string) => {
-                        return `Вы уверены что хотите удалить товар: "${goodName}"`
-                    }
-                },
-            }
+        },
+        good_details: {
+            loading: 'Загрузка...',
+            error: 'Ошибка:',
+            article: 'Артикул:'
+        },
+        good_list_item: {
+            article: 'арт.'
         },
         good_form: {
             labels: {
