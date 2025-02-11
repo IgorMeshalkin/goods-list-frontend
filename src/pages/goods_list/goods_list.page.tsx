@@ -96,12 +96,19 @@ const GoodsListPage = () => {
                     <div className={st.screen_center__container}>
                         <p>`${langContent.good_list.error} ${error.message}`</p>
                     </div>
-            }
+                }
 
-            {(!isLoading && !error) &&
-                goods?.goods.map((good) => (
+                {(!isLoading && !error) &&
+                    goods?.goods.map((good) => (
                         <GoodListItemComponent key={good.article} good={good} refetchList={refetch}/>
                     ))
+                }
+
+                {
+                    (goods?.goods && goods.goods.length === 0) &&
+                    <div className={st.screen_center__container}>
+                        <span>{langContent.good_list.not_found}</span>
+                    </div>
                 }
             </div>
             <div className={st.panel__container}>

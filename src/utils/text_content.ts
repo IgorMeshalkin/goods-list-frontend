@@ -44,7 +44,8 @@ export const text_content: any[] = [
         good_list: {
             loading: 'Загрузка...',
             error: 'Ошибка:',
-            add_new: 'Добавить товар'
+            add_new: 'Добавить товар',
+            not_found: 'Ничего не найдено.'
         },
         good_item_actions: {
             details: 'Подробнее',
