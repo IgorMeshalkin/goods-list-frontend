@@ -41,5 +41,5 @@ http://localhost:3000
 
 ## Контакты
 Связаться со мной можно в Telegram:<br>
-👉 [@IgorMeshalkin](https://t.me/IgorMeshalkin)
+👉 [@IgorMeshalkin](https://t.me/meshalkin27)
 
